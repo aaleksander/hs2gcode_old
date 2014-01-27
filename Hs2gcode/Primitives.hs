@@ -1,6 +1,5 @@
 module Hs2gcode.Primitives where
 
-
 import Hs2gcode.Commands
 
 --обойти прямоугольник по контуру

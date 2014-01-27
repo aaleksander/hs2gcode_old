@@ -1,19 +1,25 @@
 module Hs2gcode.Commands where
 
+-- команды станка в двух вариантах
 g0 :: [(Dir, Double)] -> Command
 g0 list = G0 $ Params list
+g0' :: [(Dir, Double)] -> [Command]
+g0' list = [g0 list]
+
 
 g1 :: [(Dir, Double)] -> Command
 g1 list = G1 $ Params list
+g1' :: [(Dir, Double)] -> [Command]
+g1' list = [g1 list]
 
 f :: Int -> Command
 f val  = F val
+f' :: Int -> [Command]
+f' val  = [f val]
 
 up :: Double ->[Command]
 up coord = [g0 [z coord]]
 
-
---ТИПЫ и экземпляры классов
 
 -- оси станка
 data Dir = X | Y | Z 
@@ -40,6 +46,9 @@ deep zz ff = setF ff ++ [ g1 [z zz]	]
 setF :: Int -> [Command]
 setF ff = [f ff]
 
+
+--одна координата
+data Coord = Point Dir Double
 
 -- параметры команды
 data Params = Params [(Dir, Double)]
