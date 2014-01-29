@@ -6,14 +6,15 @@ import Hs2gcode.Commands
 rect :: Double -> Double -> Double -> Double -> [Command]
 rect xx yy xs ys = --откуда начать, ширина, длина
 	[		
-		g1 [y (yy + ys)],
-		g1 [x (xx + xs)],
-		g1 [y yy],
-		g1 [x xx]
+		g1 [_y (yy + ys)],
+		g1 [_x (xx + xs)],
+		g1 [_y yy],
+		g1 [_x xx]
 	]
 
-rect_area :: Double -> Double -> Double -> Double -> Double -> [Command]
-rect_area xx yy xs ys step= 
+--вырезать прямоугольник по площади
+areaRect :: Double -> Double -> Double -> Double -> Double -> [Command]
+areaRect xx yy xs ys step= 
 	case xs > ys of
 	True -> rect xx yy xs ys
 	False -> rect xx yy 10 10
@@ -36,4 +37,4 @@ gen_list z1 z2 step
 -- Вгрызается командами в заготовку
 z_cut :: [Command] -> Double -> Double -> Double -> Int -> Int -> [Command]
 z_cut list z1 z2 step f1 f2 = 
-	concat $ [setF f1 ++ [g1 [z zz]] ++ setF f2 ++ list | zz <- gen_list z1 z2 step]
+	concat $ [setF f1 ++ [g1 [_z zz]] ++ setF f2 ++ list | zz <- gen_list z1 z2 step]
