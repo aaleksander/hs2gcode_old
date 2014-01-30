@@ -11,13 +11,16 @@ data MetaPnt =
 
 data Meta = Meta [MetaPnt]
 
+toTriple :: [a] -> [(a, a, a)]
+toTriple l = zip3 (shift_right l) l (shift_left l)
+	where 	
+		shift_left l = tail l ++ take 1 l
+		shift_right l = last l : init l
+
 meta :: [MetaPnt] -> [Command]
-meta (x1:x2:xs) = meta' x1 x2 xs []
-	where meta' first curr list acc
-		| [] <- list, (Pnt xx yy) <- first, (Pnt xxc yyc) <- curr
-			= acc ++ g1' [_x xxc, _y yyc]
-				  ++ g1' [_x xx, _y yy]
-		| (Pnt xx yy) <- curr, (x:xs) <- list 
-			= meta' first x xs (acc ++ g1' [_x xx, _y yy])
+meta list = foldr (++) [] [oneSegment x | x <- toTriple list]
+	where oneSegment (prev, curr, next)
+		| 	(Pnt cx cy) <- curr, (Pnt nx ny) <- next 
+				= g1' [X nx, Y ny]
 
 

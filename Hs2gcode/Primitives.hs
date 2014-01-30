@@ -6,10 +6,10 @@ import Hs2gcode.Commands
 rect :: Double -> Double -> Double -> Double -> [Command]
 rect xx yy xs ys = --откуда начать, ширина, длина
 	[		
-		g1 [_y (yy + ys)],
-		g1 [_x (xx + xs)],
-		g1 [_y yy],
-		g1 [_x xx]
+		g1 [Y (yy + ys)],
+		g1 [X (xx + xs)],
+		g1 [Y yy],
+		g1 [X xx]
 	]
 
 --вырезать прямоугольник по площади
@@ -36,5 +36,5 @@ gen_list z1 z2 step
 
 -- Вгрызается командами в заготовку
 z_cut :: [Command] -> Double -> Double -> Double -> Int -> Int -> [Command]
-z_cut list z1 z2 step f1 f2 = 
-	concat $ [setF f1 ++ [g1 [_z zz]] ++ setF f2 ++ list | zz <- gen_list z1 z2 step]
+z_cut list z1 z2 step f1 f2 = --f1 - вертикальная подача, f2 - горизонтальная
+	concat $ [setF f1 ++ [g1 [Z zz]] ++ setF f2 ++ list | zz <- gen_list z1 z2 step]
