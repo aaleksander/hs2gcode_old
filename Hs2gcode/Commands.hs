@@ -32,7 +32,19 @@ setF :: Int -> [Command]
 setF ff = [f ff]
 
 --одна координата
-data Position = X Double | Y Double | Z Double
+data Position = X Double | Y Double | Z Double 
+
+instance Eq Position where
+	(==) (X _) (X _) = True
+	(==) (Y _) (Y _) = True
+	(==) (Z _) (Z _) = True
+	(==) _ _ = False
+
+-- должно быть равно только ось
+(===) :: Position -> Position -> Bool
+(===) (X v1) (X v2) = v1 == v2
+(===) (Y v1) (Y v2) = v1 == v2
+(===) (Z v1) (Z v2) = v1 == v2
 
 --доступные команды станка
 data Command = 	G0 [Position]

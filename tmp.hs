@@ -1,41 +1,38 @@
 import Hs2gcode.Commands
 import Hs2gcode.Primitives
-import Hs2gcode.Meta
-import Graphics.Gloss
+import Hs2gcode.Viewer2D
 
-sz = 5 -- безопасная высота
-main_path = run 0 0 sz 
-			++ z_cut (rect 0 0 50 100) 0 (-10) 3 200 1000
-			++ 	run 0 0 sz 
-			++ 	rect 0 0 60 110
+import Control.Monad.State
 
-path = 	
-		meta meta1
---	++	run 0 0 sz
---	++	f' 1000
---	++ 	z_cut main_path (-1) (-10) 5 500 1300
---	++	run 0 0 sz
+path = [ f 100, g1 [X 100, Y 100], g1 [X 200], g1 [Y 300], g1 [X 100], g1 [Y 100] ]
 
+hasAxe :: Position -> [Position] -> Bool
+hasAxe _ [] = False
+hasAxe (X v) ((X _):xs) = True || hasAxe (X v) xs
+hasAxe (Y v) ((Y _):xs) = True || hasAxe (Y v) xs
+hasAxe (Z v) ((Z _):xs) = True || hasAxe (Z v) xs
 
+--есть список координат, мы задаем отправляем новые координаты и получаем новую позицию станка
+updatePosition :: [Position] -> [Position] -> [Position]
+updatePosition state [] = state
+updatePosition state (x:xs)
+	| not ( hasAxe x state ) = state ++ [x] ++ updatePosition state xs
+	| hasAxe x state = updatePosition state xs
 
+--задаем  станку с такой-то позицией команду и получаем новую позицию
+cnc :: [Position] -> Command -> [Position]
+cnc pos (G0 list) = updatePosition pos list
+cnc pos (G1 list) = updatePosition pos list
+cnc pos _ = pos
 
-meta1 = [
-	Pnt 100 100,
-	Pnt 200 100,
-	Pnt 200 300,
-	Pnt 100 300
-	]
-
+--получает список команд и возвращает список позиций в которых побывает станок
+simulate :: [Command] -> [[Position]]
+simulate [] = []
+simulate (x:xs) = _sim [] x : simulate xs
+	where _sim list com = cnc list com
 
 main = do
---	export $ meta_tmp meta1
-	export $ meta meta1
---	display (InWindow "My Window" (1024, 768) (100, 100)) white (gcode2Picture [])
---	putStr $ show $ uniq l1 l2
---	putStr "G21\n"
---	putStr $ show $ toTriple meta1
---	export $ meta_tmp meta1
---	putStr "\n"
---	putStr $ show $ gcodeOptimize $ meta_tmp meta1
---	putStr "\nm2"
+	mapM_ (putStr.(++"\n").show) $ simulate path
 	putStr "\n"
+
+	putStr "The end\n"	

@@ -1,5 +1,6 @@
 module Hs2gcode.Meta where
 
+
 import Hs2gcode.Commands
 --реализация мета-траекторий
 
@@ -8,8 +9,16 @@ data MetaPnt =
 		| RadiusPnt Double Double Double
 		| RounfPnt Double Double Double
 		deriving (Show)
-
 data Meta = Meta [MetaPnt]
+
+--data Point{Double x, Double y}
+
+--data Segment = {
+--	Point p1, 
+--	Point p2
+--	}
+
+
 
 toTriple :: [a] -> [(a, a, a)]
 toTriple l = zip3 (shift_right l) l (shift_left l)
