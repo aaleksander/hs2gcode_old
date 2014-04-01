@@ -1,6 +1,11 @@
+import Control.Monad.Writer
+import CNC
 
 
-rnd::Double ->Double
-rnd x = (fromIntegral (floor (x*1000.0)))/1000.0
 
-main = putStr $ show $ rnd 0.3456
+
+data Pnt = Point Double Double
+
+
+
+main = export $ meta2CNC f1

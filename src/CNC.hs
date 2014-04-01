@@ -4,7 +4,7 @@ import Test.Tasty.HUnit
 import Control.Monad.State
 import Data.List
 import Control.Monad.Writer
-
+import Common
 
 --main = do CNC.test
 
@@ -27,8 +27,8 @@ instance Show Position where
 data Command = 
 		G0 [Position]
 	| 	G1 [Position]
-	|	G2 [Position]
-	|	G3 [Position]
+	|	G2 [Position] -- дуга по часовой
+	|	G3 [Position] -- дуга против часовой
 	|	F Double
 
 instance Show Command where
@@ -46,15 +46,28 @@ arr2Str l = concat $ intersperse " " $ map show l
 -- КОМАНДЫ ЧПУ
 
 g1 :: [Position] -> CNCWriter
-g1 par = writer (aa, [aa]) where aa = G1 par
+g1 par = write $ G1 par
 
 g0 :: [Position] -> CNCWriter
-g0 par = writer (aa, [aa]) where aa = G0 par
+g0 par = write $ G0 par
 
 f :: Double -> CNCWriter
-f par = writer (aa, [aa]) where aa = F par
+f par = write $ F par
 
+g1xy x y = do
+	g1[X x, Y y]
 
+g0xy x y = do
+	g0[X x, Y y]
+
+g1z z = do g1 [Z z]
+g0z z = do g0 [Z z]
+
+g2 :: [Position] -> CNCWriter
+g2 par = write $ G2 par
+
+g3 :: [Position] -> CNCWriter
+g3 par = write $ G3 par
 
 --выводит последовательность команд в консоль
 export f = mapM_ (putStrLn.show) y

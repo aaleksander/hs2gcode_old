@@ -4,12 +4,14 @@ import Test.Tasty.HUnit
 
 import CNC
 import Commands
+import Meta
 
 tests' :: TestTree
 tests' = testGroup "Тесты" [
 	CNC.tests, 
-	Commands.tests]
+	Commands.tests,
+	Meta.tests]
 
 main = do
 	defaultMain tests'
-	putStrLn $ show $ G1 [X 100]
+

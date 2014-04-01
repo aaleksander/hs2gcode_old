@@ -4,7 +4,7 @@ import Test.Tasty.HUnit
 import Data.List
 import CNC
 
-main = Commands.test
+--main = Commands.test
 
 --тут всякие макрокоманды
 down:: Double -> CNCWriter
