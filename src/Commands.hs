@@ -38,12 +38,12 @@ tests = testGroup "Commands" [checkMoving]
 
 checkMoving = testGroup "Перемещения"
 	[
-		testCase "01: up" 	 $ export' t1 @?= "G0 Z10.0\n",
-		testCase "02: down"  $ export' t3 @?= "G1 Z-10.0\n",
-		testCase "03: for"	 $ export' t2 @?= "G0 X1.0\nG0 X2.0\nG0 X3.0\n",
-		testCase "04: for"   $ export' t4 @?= "G0 X1.0\nG0 X1.5\nG0 X2.0\nG0 X2.5\nG0 X3.0\n",
-		testCase "05: for"   $ export' t5 @?= "G0 X0.0\nG0 X0.3\nG0 X0.6\nG0 X0.9\nG0 X1.0\n",
-		testCase "06: for"   $ export' t6 @?= "G0 X0.0\nG0 X-0.3\nG0 X-0.6\nG0 X-0.9\nG0 X-1.0\n"
+		testCase "01: up" 	 $ export' t1 @?= "G0 Z10\n",
+		testCase "02: down"  $ export' t3 @?= "G1 Z-10\n",
+		testCase "03: for"	 $ export' t2 @?= "G0 X1\nG0 X2\nG0 X3\n",
+		testCase "04: for"   $ export' t4 @?= "G0 X1\nG0 X1.5\nG0 X2\nG0 X2.5\nG0 X3\n",
+		testCase "05: for"   $ export' t5 @?= "G0 X0\nG0 X0.3\nG0 X0.6\nG0 X0.9\nG0 X1\n",
+		testCase "06: for"   $ export' t6 @?= "G0 X0\nG0 X-0.3\nG0 X-0.6\nG0 X-0.9\nG0 X-1\n"
 	]
 	where 
 		f x = g0[X x]
